@@ -14,6 +14,17 @@ jobs:
         submodules: false # avoid cloning ethereum/tests
       script:
         - go run build/ci.go lint
+    - stage: lint
+      arch: arm64
+      os: linux
+      dist: xenial
+      go: 1.13.x
+      env:
+        - lint
+      git:
+        submodules: false # avoid cloning ethereum/tests
+      script:
+        - go run build/ci.go lint
 
     - stage: build
       os: linux
@@ -26,8 +37,32 @@ jobs:
       script:
         - go run build/ci.go install
         - go run build/ci.go test -coverage $TEST_PACKAGES
+    - stage: build
+      arch: arm64
+      os: linux
+      dist: xenial
+      go: 1.11.x
+      env:
+        - GO111MODULE=on
+      git:
+        submodules: true # cloning simplechain-org/tests
+      script:
+        - go run build/ci.go install
+        - go run build/ci.go test -coverage $TEST_PACKAGES
 
     - stage: build
+      os: linux
+      dist: xenial
+      go: 1.12.x
+      env:
+        - GO111MODULE=on
+      git:
+        submodules: true # cloning simplechain-org/tests
+      script:
+        - go run build/ci.go install
+        - go run build/ci.go test -coverage $TEST_PACKAGES
+    - stage: build
+      arch: arm64
       os: linux
       dist: xenial
       go: 1.12.x
@@ -62,7 +97,6 @@ jobs:
       script:
         - go run build/ci.go install
         - go run build/ci.go test -coverage $TEST_PACKAGES
-
     - stage: build
       os: osx
       osx_image: xcode11.3
